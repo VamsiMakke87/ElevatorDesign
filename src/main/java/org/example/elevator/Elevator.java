@@ -4,16 +4,17 @@ import org.example.elevator.util.Direction;
 
 public class Elevator {
 
-    private static Elevator elevator;
-
     private int currentFloor;
     private Direction direction;
 
+    private int maxRequests;
+
     private int id;
 
-    public Elevator(int id) {
+    public Elevator(int id,int maxRequests) {
         this.id = id;
         this.direction = Direction.IDLE;
+        this.maxRequests=maxRequests;
     }
 
     public int getId() {
@@ -34,5 +35,15 @@ public class Elevator {
 
     public void setCurrentFloor(int currentFloor) {
         this.currentFloor = currentFloor;
+    }
+
+
+
+    public int getRequests() {
+        return maxRequests;
+    }
+
+    public void addRequest() {
+        this.maxRequests = maxRequests-1;
     }
 }
