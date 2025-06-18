@@ -27,6 +27,10 @@ public class Elevator {
         return direction;
     }
 
+    private void setDirection(Direction direction){
+        this.direction=direction;
+    }
+
     public int getId() {
         return id;
     }
@@ -37,5 +41,10 @@ public class Elevator {
 
     public boolean canServeRequests(){
         return requestProcessingQueue.size()<maxRequests;
+    }
+
+    public void emergencyStop(){
+        setDirection(Direction.EMERGENCYSTOP); //stopping at that floor
+        requestProcessingQueue.clear();  // clearing all the pending requests
     }
 }
