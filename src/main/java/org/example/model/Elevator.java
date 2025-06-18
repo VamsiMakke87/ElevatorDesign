@@ -22,4 +22,20 @@ public class Elevator {
         this.currentFloor = currentFloor;
         this.direction=Direction.IDLE;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public boolean canServeRequests(){
+        return requestProcessingQueue.size()<maxRequests;
+    }
 }
