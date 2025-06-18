@@ -14,7 +14,13 @@ public class Elevator {
     private TreeSet<Integer> maxHeap = new TreeSet<>(Collections.reverseOrder()); // to process requests while going down
     private TreeSet<Integer> requestProcessingQueue = new TreeSet<>(); // to process requests in current direction
 
-    private List<InternalButton> internalButtons =new ArrayList<>();
+    private List<InternalButton> internalFloorButtons =new ArrayList<>();
+
+    private InternalButton fanButton;
+
+    private InternalButton lightButton;
+
+    private InternalButton emergencyStopButton;
     private int id;
     private Direction direction;
     private int currentFloor;
@@ -30,11 +36,11 @@ public class Elevator {
         this.maxFloors=maxFloors;
 
         for(int i=0;i<maxFloors;i++)
-            internalButtons.add(new FloorNumberInternalButton(this,i)); // creating floor number internal buttons
+            internalFloorButtons.add(new FloorNumberInternalButton(this,i)); // creating floor number internal buttons
         // Adding fan, light and emergency stop buttons
-        internalButtons.add(new FanButton(this));
-        internalButtons.add(new LightButton(this));
-        internalButtons.add(new EmergencyStopButton(this));
+        fanButton=new FanButton(this);
+        lightButton=new LightButton(this);
+        emergencyStopButton=new EmergencyStopButton(this);
 
     }
 
@@ -71,6 +77,22 @@ public class Elevator {
 
     private Integer getNextFloor(){
         return requestProcessingQueue.isEmpty()?null:requestProcessingQueue.first();
+    }
+
+    public List<InternalButton> getInternalFloorButtons() {
+        return internalFloorButtons;
+    }
+
+    public InternalButton getFanButton() {
+        return fanButton;
+    }
+
+    public InternalButton getEmergencyStopButton() {
+        return emergencyStopButton;
+    }
+
+    public InternalButton getLightButton() {
+        return lightButton;
     }
 
     public void emergencyStop(){

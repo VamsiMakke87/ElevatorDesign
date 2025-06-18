@@ -10,11 +10,9 @@ import java.util.List;
 
 public class NearestElevatorStrategy implements ElevatorSelectionStrategy {
 
-    private ElevatorController elevatorController=new ElevatorController();
-    @Override
-    public Elevator selectOptimalElevator(Request request) {
-        List<Elevator> elevators=elevatorController.getElevators();
 
+    @Override
+    public Elevator selectOptimalElevator(List<Elevator>elevators,Request request) {
         List<Elevator> optimalElevators= elevators.stream()
                 .filter(elevator ->
                     (elevator.getDirection()== Direction.IDLE || elevator.getDirection()==request.getDirection())

@@ -1,12 +1,18 @@
 package org.example;
 
 
+import org.example.controller.ElevatorController;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        System.out.println("Hello world");
+        ElevatorController elevatorController=new ElevatorController(10,2); // maxFloors=10 and numberOfElevators=2
+
+        elevatorController.getElevator(0).getFanButton().click();
+        elevatorController.getElevator(1).getLightButton().click();
+        elevatorController.getElevator(0).getFanButton().click();
 
     }
 }

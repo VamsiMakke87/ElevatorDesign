@@ -55,6 +55,10 @@ public class ElevatorController {
         requests.add(request);
     }
 
+    public Elevator getElevator(int elevatorId){
+        return elevators.get(elevatorId);
+    }
+
     public int getMaxFloors() {
         return maxFloors;
     }
