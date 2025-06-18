@@ -86,7 +86,6 @@ public class ElevatorController {
             while (!requests.isEmpty()) {
                 Request currentRequest = requests.removeFirst();
                 Elevator elevator = elevatorSelectionStrategy.selectOptimalElevator(elevators, currentRequest);
-                System.out.println(currentRequest+";"+elevator+";"+elevators);
                 if (elevator == null) {
                     pendingRequests.add(currentRequest);
                 } else {

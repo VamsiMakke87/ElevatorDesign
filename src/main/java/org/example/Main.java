@@ -15,9 +15,12 @@ public class Main {
 //        elevatorController.getElevator(1).getLightButton().click();
         elevatorController.getElevator(0).getFanButton().click();
 
-        elevatorController.getFloor(5).clickUpwardRequestExternalButton();
+        elevatorController.getFloor(9).clickUpwardRequestExternalButton();
         elevatorController.getFloor(3).clickDownwardRequestExternalButton();
         elevatorController.getFloor(9).clickDownwardRequestExternalButton();
+
+       Thread.sleep(5000);
+        elevatorController.getElevator(0).getInternalFloorButton(1).click();
 
     }
 }

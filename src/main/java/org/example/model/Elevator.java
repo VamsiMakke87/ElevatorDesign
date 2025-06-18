@@ -15,6 +15,8 @@ public class Elevator {
     private TreeSet<Integer> minHeap = new TreeSet<>(); // to process requests while going up
     private TreeSet<Integer> maxHeap = new TreeSet<>(Collections.reverseOrder()); // to process requests while going down
     private TreeSet<Integer> requestProcessingQueue = new TreeSet<>(); // to process requests in current direction
+    private TreeSet<Integer> otherQueue = new TreeSet<>(); // pointing to the queue for other direction
+
 
     private List<InternalButton> internalFloorButtons = new ArrayList<>();
 
@@ -56,8 +58,10 @@ public class Elevator {
         this.direction = direction;
         if (direction == Direction.UP) {
             requestProcessingQueue = minHeap;
+            otherQueue = maxHeap;
         } else {
             requestProcessingQueue = maxHeap;
+            otherQueue = minHeap;
         }
     }
 
@@ -78,19 +82,19 @@ public class Elevator {
     }
 
     private void openDoors() {
-        System.out.println("Elevator " + id + " doors open in floor "+currentFloor);
+        System.out.println("Elevator " + id + " doors open in floor " + currentFloor);
     }
 
     private void closeDoors() {
-        System.out.println("Elevator " + id + " doors close in floor "+ currentFloor);
+        System.out.println("Elevator " + id + " doors close in floor " + currentFloor);
     }
 
     private Integer getNextFloor() {
         return requestProcessingQueue.isEmpty() ? null : requestProcessingQueue.first();
     }
 
-    public List<InternalButton> getInternalFloorButtons() {
-        return internalFloorButtons;
+    public InternalButton getInternalFloorButton(int floorNumber) {
+        return internalFloorButtons.get(floorNumber);
     }
 
     public InternalButton getFanButton() {
@@ -110,8 +114,12 @@ public class Elevator {
 
         if (direction == Direction.IDLE) {
             setDirection(request.getDestinationFloor() > currentFloor ? Direction.UP : Direction.DOWN);
+            requestProcessingQueue.add(request.getDestinationFloor());
+        } else if (request.getDirection() != direction) {
+            otherQueue.add(request.getDestinationFloor());
+        } else {
+            requestProcessingQueue.add(request.getDestinationFloor());
         }
-        requestProcessingQueue.add(request.getDestinationFloor());
         synchronized (this) {
             System.out.println("Elevator" + id + " notified");
             notifyAll();
@@ -124,7 +132,7 @@ public class Elevator {
 
             while (!requestProcessingQueue.isEmpty()) {
                 int nextFloorDirection = direction == Direction.UP ? 1 : -1;
-                System.out.println("Elevator "+id+" in floor "+currentFloor);
+                System.out.println("Elevator " + id + " in floor " + currentFloor);
                 if (currentFloor == requestProcessingQueue.first()) {
                     openDoors();
                     try {
@@ -144,10 +152,15 @@ public class Elevator {
                 }
             }
 
+            if(!otherQueue.isEmpty()){
+                setDirection(Direction.UP==direction? Direction.DOWN:Direction.UP);
+                continue;
+            }
+
             setElevatorToIdle();
             synchronized (this) {
                 try {
-                    System.out.println("Elevator" + id + " waiting");
+                    System.out.println("Elevator " + id + " waiting");
                     wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -160,6 +173,7 @@ public class Elevator {
     private void setElevatorToIdle() {
         setDirection(Direction.IDLE);
         elevatorController.notifyController();
+
     }
 
     public void emergencyStop() {
