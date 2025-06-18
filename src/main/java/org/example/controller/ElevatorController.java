@@ -13,34 +13,48 @@ import java.util.List;
 
 public class ElevatorController {
 
-    private List<Request> requests=new ArrayList<>();
+    private List<Request> requests = new ArrayList<>();
 
-    private List<Elevator> elevators=new ArrayList<>();
-    private List<Floor> floors=new ArrayList<>();
+    private List<Request> pendingRequests=new ArrayList<>();
 
-    private int maxFloors= 50;
+    private List<Elevator> elevators = new ArrayList<>();
+    private List<Floor> floors = new ArrayList<>();
+
+    private int maxFloors = 50;
+
+    private static ElevatorController instance=null;
 
     private int numberOfElevators;
-    private ElevatorSelectionStrategy elevatorSelectionStrategy;
+    private  ElevatorSelectionStrategy elevatorSelectionStrategy;
 
-    public ElevatorController(int maxFloors, int numberOfElevators) {
+    private ElevatorController(int maxFloors, int numberOfElevators) {
         this.maxFloors = maxFloors;
         this.numberOfElevators = numberOfElevators;
+        this.elevatorSelectionStrategy = new NearestElevatorStrategy();
 
-        for(int i=0;i<numberOfElevators;i++){
-            Elevator elevator=new Elevator(i,5,0,maxFloors);
+        for (int i = 0; i < numberOfElevators; i++) {
+            Elevator elevator = new Elevator(i, 5, 0, maxFloors,this);
             elevators.add(elevator);
+            new Thread(elevator::processRequests).start();
         }
 
-        for (int i=0;i<maxFloors;i++){
-            Floor floor=new Floor(i,new UpwardRequestExternalButton(i),new DownwardRequestExternalButton(i));
+        for (int i = 0; i < maxFloors; i++) {
+            Floor floor = new Floor(i, new UpwardRequestExternalButton(i,this), new DownwardRequestExternalButton(i,this));
             floors.add(floor);
         }
 
     }
 
-    public ElevatorController() {
-        this.elevatorSelectionStrategy= new NearestElevatorStrategy();
+
+    private ElevatorController() {
+        this.elevatorSelectionStrategy = new NearestElevatorStrategy();
+    }
+
+    public static ElevatorController getInstance(int maxFloors, int numberOfElevators){
+        if(instance==null){
+            instance=new ElevatorController(maxFloors,numberOfElevators);
+        }
+        return instance;
     }
 
     public void setElevatorSelectionStrategy(ElevatorSelectionStrategy elevatorSelectionStrategy) {
@@ -51,15 +65,54 @@ public class ElevatorController {
         return elevators;
     }
 
-    public void addRequest(Request request){
+    public synchronized void addRequest(Request request) {
         requests.add(request);
+        notifyAll();
+
     }
 
-    public Elevator getElevator(int elevatorId){
+
+    public synchronized void processRequests() {
+        while (true) {
+            while (requests.isEmpty()) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            while (!requests.isEmpty()) {
+                Request currentRequest = requests.removeFirst();
+                Elevator elevator = elevatorSelectionStrategy.selectOptimalElevator(elevators, currentRequest);
+                System.out.println(currentRequest+";"+elevator+";"+elevators);
+                if (elevator == null) {
+                    pendingRequests.add(currentRequest);
+                } else {
+                    elevator.addRequest(currentRequest);
+                }
+            }
+        }
+
+    }
+
+    public Elevator getElevator(int elevatorId) {
         return elevators.get(elevatorId);
     }
 
     public int getMaxFloors() {
         return maxFloors;
+    }
+
+    public Floor getFloor(int floorNumber) {
+        return floors.get(floorNumber);
+    }
+
+    public synchronized void notifyController() {
+        if(!pendingRequests.isEmpty()){
+            requests.add(pendingRequests.removeFirst());
+            notifyAll();
+        }
     }
 }

@@ -12,9 +12,9 @@ public abstract class ExternalButton {
     private Direction direction;
     private ElevatorController elevatorController;
 
-    public ExternalButton(int floorNumber) {
+    public ExternalButton(int floorNumber, ElevatorController elevatorController) {
         this.floorNumber = floorNumber;
-        this.elevatorController=new ElevatorController();
+        this.elevatorController=elevatorController;
     }
 
     public abstract void click();

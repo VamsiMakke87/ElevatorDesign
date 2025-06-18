@@ -9,9 +9,9 @@ public abstract class InternalButton {
     private Elevator elevator;
     private ElevatorController elevatorController;
 
-    public InternalButton(Elevator elevator) {
+    public InternalButton(Elevator elevator,ElevatorController elevatorController) {
         this.elevator=elevator;
-        this.elevatorController = new ElevatorController();
+        this.elevatorController = elevatorController;
     }
 
     public void addRequest(Request request){

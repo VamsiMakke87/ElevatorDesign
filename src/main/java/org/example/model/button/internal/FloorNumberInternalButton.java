@@ -1,5 +1,6 @@
 package org.example.model.button.internal;
 
+import org.example.controller.ElevatorController;
 import org.example.model.Elevator;
 import org.example.util.Direction;
 import org.example.util.Request;
@@ -8,8 +9,8 @@ public class FloorNumberInternalButton extends InternalButton {
 
     private int floorNumber;
 
-    public FloorNumberInternalButton(Elevator elevator, int floorNumber) {
-        super(elevator);
+    public FloorNumberInternalButton(Elevator elevator, ElevatorController elevatorController, int floorNumber) {
+        super(elevator,elevatorController);
         this.floorNumber=floorNumber;
     }
 

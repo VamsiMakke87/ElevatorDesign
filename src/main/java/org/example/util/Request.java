@@ -25,4 +25,13 @@ public class Request {
     public Direction getDirection() {
         return direction;
     }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "sourceFloor=" + sourceFloor +
+                ", destinationFloor=" + destinationFloor +
+                ", direction=" + direction +
+                '}';
+    }
 }

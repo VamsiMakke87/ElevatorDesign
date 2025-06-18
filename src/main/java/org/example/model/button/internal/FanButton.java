@@ -1,13 +1,14 @@
 package org.example.model.button.internal;
 
+import org.example.controller.ElevatorController;
 import org.example.model.Elevator;
 
 public class FanButton extends InternalButton{
 
     private boolean isFanOn;
 
-    public FanButton(Elevator elevator) {
-        super(elevator);
+    public FanButton(Elevator elevator, ElevatorController elevatorController) {
+        super(elevator,elevatorController);
         this.isFanOn=false;
     }
 

@@ -8,11 +8,16 @@ import org.example.controller.ElevatorController;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        ElevatorController elevatorController=new ElevatorController(10,2); // maxFloors=10 and numberOfElevators=2
+        ElevatorController elevatorController=ElevatorController.getInstance(10,2); // maxFloors=10 and numberOfElevators=2
+        new Thread(elevatorController::processRequests,"Thread 1").start();
+        Thread.sleep(1000);
+        elevatorController.getElevator(0).getFanButton().click();
+//        elevatorController.getElevator(1).getLightButton().click();
+        elevatorController.getElevator(0).getFanButton().click();
 
-        elevatorController.getElevator(0).getFanButton().click();
-        elevatorController.getElevator(1).getLightButton().click();
-        elevatorController.getElevator(0).getFanButton().click();
+        elevatorController.getFloor(5).clickUpwardRequestExternalButton();
+        elevatorController.getFloor(3).clickDownwardRequestExternalButton();
+        elevatorController.getFloor(9).clickDownwardRequestExternalButton();
 
     }
 }

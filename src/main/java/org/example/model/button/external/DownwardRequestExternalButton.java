@@ -1,13 +1,14 @@
 package org.example.model.button.external;
 
+import org.example.controller.ElevatorController;
 import org.example.util.Direction;
 
 public class DownwardRequestExternalButton extends ExternalButton{
 
 
 
-    public DownwardRequestExternalButton(int floorNumber) {
-        super(floorNumber);
+    public DownwardRequestExternalButton(int floorNumber, ElevatorController elevatorController) {
+        super(floorNumber,elevatorController);
     }
 
     @Override
