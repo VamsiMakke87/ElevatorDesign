@@ -14,4 +14,11 @@ public class Floor {
         this.upwardRequestExternalButton = upwardRequestExternalButton;
         this.downwardRequestExternalButton = downwardRequestExternalButton;
     }
+
+    public void clickUpwardRequestExternalButton(){
+        upwardRequestExternalButton.click();
+    }
+    public void clickDownwardRequestExternalButton(){
+        downwardRequestExternalButton.click();
+    }
 }
