@@ -28,7 +28,7 @@ public class ElevatorController {
         this.numberOfElevators = numberOfElevators;
 
         for(int i=0;i<numberOfElevators;i++){
-            Elevator elevator=new Elevator(i,5,0);
+            Elevator elevator=new Elevator(i,5,0,maxFloors);
             elevators.add(elevator);
         }
 

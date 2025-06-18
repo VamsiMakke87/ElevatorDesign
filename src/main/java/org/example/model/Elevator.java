@@ -1,8 +1,11 @@
 package org.example.model;
 
+import org.example.model.button.internal.*;
 import org.example.util.Direction;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.TreeSet;
 
 public class Elevator {
@@ -11,16 +14,28 @@ public class Elevator {
     private TreeSet<Integer> maxHeap = new TreeSet<>(Collections.reverseOrder()); // to process requests while going down
     private TreeSet<Integer> requestProcessingQueue = new TreeSet<>(); // to process requests in current direction
 
+    private List<InternalButton> internalButtons =new ArrayList<>();
     private int id;
     private Direction direction;
     private int currentFloor;
     private int maxRequests;
 
-    public Elevator(int id, int maxRequests, int currentFloor) {
+    private int maxFloors;
+
+    public Elevator(int id, int maxRequests, int currentFloor,int maxFloors) {
         this.id = id;
         this.maxRequests = maxRequests;
         this.currentFloor = currentFloor;
         this.direction=Direction.IDLE;
+        this.maxFloors=maxFloors;
+
+        for(int i=0;i<maxFloors;i++)
+            internalButtons.add(new FloorNumberInternalButton(this,i)); // creating floor number internal buttons
+        // Adding fan, light and emergency stop buttons
+        internalButtons.add(new FanButton(this));
+        internalButtons.add(new LightButton(this));
+        internalButtons.add(new EmergencyStopButton(this));
+
     }
 
     public Direction getDirection() {
