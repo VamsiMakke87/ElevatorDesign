@@ -1,14 +1,13 @@
 package org.example.model.button.internal;
 
-import org.example.controller.ElevatorController;
 import org.example.model.Elevator;
 
 public class LightButton extends InternalButton{
 
     private boolean isLightOn;
 
-    public LightButton(Elevator elevator, ElevatorController elevatorController) {
-        super(elevator,elevatorController);
+    public LightButton(Elevator elevator) {
+        super(elevator);
         this.isLightOn=false;
     }
 

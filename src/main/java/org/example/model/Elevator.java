@@ -41,11 +41,11 @@ public class Elevator {
         this.elevatorController = elevatorController;
 
         for (int i = 0; i < maxFloors; i++)
-            internalFloorButtons.add(new FloorNumberInternalButton(this, elevatorController, i)); // creating floor number internal buttons
+            internalFloorButtons.add(new FloorNumberInternalButton(this, i)); // creating floor number internal buttons
         // Adding fan, light and emergency stop buttons
-        fanButton = new FanButton(this, elevatorController);
-        lightButton = new LightButton(this, elevatorController);
-        emergencyStopButton = new EmergencyStopButton(this, elevatorController);
+        fanButton = new FanButton(this);
+        lightButton = new LightButton(this);
+        emergencyStopButton = new EmergencyStopButton(this);
     }
 
     public Direction getDirection() {

@@ -1,6 +1,5 @@
 package org.example.model.strategy.impl;
 
-import org.example.controller.ElevatorController;
 import org.example.model.Elevator;
 import org.example.model.strategy.ElevatorSelectionStrategy;
 import org.example.util.Direction;
