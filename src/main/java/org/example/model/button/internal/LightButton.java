@@ -2,22 +2,22 @@ package org.example.model.button.internal;
 
 import org.example.model.Elevator;
 
-public class FanButton extends InternalButton{
+public class LightButton extends InternalButton{
 
-    private boolean isFanOn;
+    private boolean isLightOn;
 
-    public FanButton(Elevator elevator) {
+    public LightButton(Elevator elevator) {
         super(elevator);
-        this.isFanOn=false;
+        this.isLightOn=false;
     }
 
     @Override
     public void click() {
-        isFanOn=!isFanOn;
-        if(isFanOn){
-            System.out.println("Elevator "+getElevator().getId()+" Fan turned on");
+        isLightOn=!isLightOn;
+        if(isLightOn){
+            System.out.println("Elevator "+getElevator().getId()+" Light turned on");
         }else{
-            System.out.println("Elevator "+getElevator().getId()+" Fan turned off");
+            System.out.println("Elevator "+getElevator().getId()+" Light turned off");
         }
     }
 }
