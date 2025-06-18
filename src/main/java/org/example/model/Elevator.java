@@ -27,12 +27,16 @@ public class Elevator {
         return direction;
     }
 
-    private void setDirection(Direction direction){
+    private synchronized void setDirection(Direction direction){
         this.direction=direction;
     }
 
     public int getId() {
         return id;
+    }
+
+    private void setCurrentFloor(int currentFloor) {
+        this.currentFloor = currentFloor;
     }
 
     public int getCurrentFloor() {
@@ -43,7 +47,20 @@ public class Elevator {
         return requestProcessingQueue.size()<maxRequests;
     }
 
+    private void openDoors(){
+        System.out.println("Elevator "+ id+" doors open");
+    }
+    private void closeDoors(){
+        System.out.println("Elevator "+ id+" doors close");
+    }
+
+    private Integer getNextFloor(){
+        return requestProcessingQueue.isEmpty()?null:requestProcessingQueue.first();
+    }
+
     public void emergencyStop(){
+        setCurrentFloor(getNextFloor()+1);// going to the next floor
+        openDoors(); // opening doors
         setDirection(Direction.EMERGENCYSTOP); //stopping at that floor
         requestProcessingQueue.clear();  // clearing all the pending requests
     }
