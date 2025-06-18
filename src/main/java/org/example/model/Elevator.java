@@ -3,13 +3,13 @@ package org.example.model;
 import org.example.util.Direction;
 
 import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 public class Elevator {
 
-    private PriorityQueue<Integer> minHeap = new PriorityQueue<>(); // to process requests while going up
-    private PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // to process requests while going down
-    private PriorityQueue<Integer> requestProcessingQueue = new PriorityQueue<>(); // to process requests in current direction
+    private TreeSet<Integer> minHeap = new TreeSet<>(); // to process requests while going up
+    private TreeSet<Integer> maxHeap = new TreeSet<>(Collections.reverseOrder()); // to process requests while going down
+    private TreeSet<Integer> requestProcessingQueue = new TreeSet<>(); // to process requests in current direction
 
     private int id;
     private Direction direction;
