@@ -8,6 +8,7 @@ public abstract class ExternalButton {
 
     private int floorNumber;
 
+    private boolean isButtonClicked;
     private Direction direction;
     private ElevatorController elevatorController;
 
@@ -23,4 +24,11 @@ public abstract class ExternalButton {
         elevatorController.addRequest(request);
     }
 
+    public boolean isButtonClicked() {
+        return isButtonClicked;
+    }
+
+    public void setButtonClicked(boolean buttonClicked) {
+        isButtonClicked = buttonClicked;
+    }
 }

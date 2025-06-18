@@ -55,5 +55,7 @@ public class ElevatorController {
         requests.add(request);
     }
 
-
+    public int getMaxFloors() {
+        return maxFloors;
+    }
 }
