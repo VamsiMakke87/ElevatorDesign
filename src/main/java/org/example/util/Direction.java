@@ -1,8 +1,8 @@
-package org.example.elevator.util;
+package org.example.util;
 
 public enum Direction {
 
     UP,
     DOWN,
-    IDLE
+    IDLEs
 }
