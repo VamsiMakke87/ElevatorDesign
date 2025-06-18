@@ -4,5 +4,6 @@ public enum Direction {
 
     UP,
     DOWN,
-    IDLE
+    IDLE,
+    EMERGENCYSTOP
 }
