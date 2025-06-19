@@ -50,7 +50,7 @@ public class Elevator {
         emergencyStopButton = new EmergencyStopButton(this);
     }
 
-    public Direction getDirection() {
+    public synchronized Direction getDirection() {
         return direction;
     }
 
@@ -111,7 +111,10 @@ public class Elevator {
 
 
     public void addRequest(Request request) {
-
+        if(request.getDestinationFloor()==currentFloor){
+            simulateDoors();
+            return;
+        }
         if (direction == Direction.IDLE) {
             setDirection(request.getDestinationFloor() > currentFloor ? Direction.UP : Direction.DOWN);
             requestProcessingQueue.add(request.getDestinationFloor());
@@ -126,21 +129,25 @@ public class Elevator {
         }
     }
 
+    private void simulateDoors() {
+        openDoors();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        closeDoors();
+    }
+
     public void processRequests() {
 
         while (true) {
 
             while (!requestProcessingQueue.isEmpty()) {
                 int nextFloorDirection = direction == Direction.UP ? 1 : -1;
-                System.out.println("Elevator " + id + " in floor " + currentFloor);
+                System.out.println("Elevator " + id + " in floor " + currentFloor+ requestProcessingQueue);
                 if (currentFloor == requestProcessingQueue.first()) {
-                    openDoors();
-                    try {
-                        Thread.sleep(3000); // simulating door opening and closing movement
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    closeDoors();
+                   simulateDoors();
                     requestProcessingQueue.removeFirst();
                 } else {
                     currentFloor += nextFloorDirection;
@@ -177,7 +184,7 @@ public class Elevator {
     }
 
     public void emergencyStop() {
-        setCurrentFloor(getNextFloor() + 1);// going to the next floor
+        setCurrentFloor(Math.max(currentFloor+1,maxFloors));// going to the next floor
         openDoors(); // opening doors
         setDirection(Direction.EMERGENCYSTOP); //stopping at that floor
         requestProcessingQueue.clear();  // clearing all the pending requests

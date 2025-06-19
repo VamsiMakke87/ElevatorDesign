@@ -17,7 +17,8 @@ public class FloorNumberInternalButton extends InternalButton {
     public void click() {
         int source=getElevator().getCurrentFloor();
         int destination= this.floorNumber;
-        addRequest(new Request(source,destination,getDirection(source,destination)));
+        if(source!=destination)
+            addRequest(new Request(source,destination,getDirection(source,destination)));
     }
 
     private Direction getDirection(int source, int destination) {

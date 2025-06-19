@@ -33,7 +33,7 @@ public class ElevatorController {
         this.elevatorSelectionStrategy = new NearestElevatorStrategy();
 
         for (int i = 0; i < numberOfElevators; i++) {
-            Elevator elevator = new Elevator(i, 5, 0, maxFloors,this);
+            Elevator elevator = new Elevator(i, 5, i, maxFloors,this); // Placing elevators in diff floors
             elevators.add(elevator);
             new Thread(elevator::processRequests).start();
         }
@@ -86,6 +86,7 @@ public class ElevatorController {
             while (!requests.isEmpty()) {
                 Request currentRequest = requests.removeFirst();
                 Elevator elevator = elevatorSelectionStrategy.selectOptimalElevator(elevators, currentRequest);
+                System.out.println(currentRequest+";"+elevator);
                 if (elevator == null) {
                     pendingRequests.add(currentRequest);
                 } else {
