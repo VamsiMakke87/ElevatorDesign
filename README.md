@@ -176,7 +176,7 @@ src/
 4. Sample usage:
 
 ```java
-ElevatorController controller = ElevatorController.getInstance(10, 2);
+ElevatorController controller = ElevatorController.getInstance(10, 2); // maxFloors:10, numberOfElevators:2
 controller.getElevator(0).getFanButton().click();
 controller.getFloor(5).clickUpwardRequestExternalButton();
 ```
